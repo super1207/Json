@@ -1,6 +1,7 @@
 #include<iostream>
 #include<string>
 #include<vector>
+#include<map>
 using namespace std;
 
 vector<string> DFA(const string & str)
@@ -59,7 +60,7 @@ vector<string> DFA(const string & str)
 			do
 			{
 				n.push_back(str.at(i++));
-			} while ((str.at(i) <= '9'&& str.at(i) >= 0) || str.at(i) == '-'|| str.at(i) == '.');
+			} while ((str.at(i) <= '9'&& str.at(i) >= '0') || str.at(i) == '-'|| str.at(i) == '.');
 			ret.push_back(n);
 		}
 		else if (str.at(i) == '\"')
@@ -109,24 +110,108 @@ vector<string> DFA(const string & str)
 	}
 	return ret;
 }
+vector<vector<string> > jsonArray(const vector<string> & vec)
+{
+	vector<vector<string>> ret;
+	size_t flag = 0;
+	if (vec.size() > 2)
+	{
+		ret.push_back({});
+		for (size_t i = 1; i < vec.size() - 1; ++i)
+		{
+			if (vec.at(i) == ",")
+			{
+				if (flag == 0)
+				{
+					ret.push_back({});
+				}
+				else
+				{
+					ret.at(ret.size() - 1).push_back(",");
+				}
+			}
+			else if (vec.at(i) == "{" || vec.at(i) == "[")
+			{
+				++flag;
+				ret.at(ret.size() - 1).push_back(vec.at(i));
+			}
+			else if (vec.at(i) == "}" || vec.at(i) == "]")
+			{
+				--flag;
+				ret.at(ret.size() - 1).push_back(vec.at(i));
+			}
+			else
+			{
+				ret.at(ret.size() - 1).push_back(vec.at(i));
+			}
+		}
+	}
+	return ret;
+}
+map<string, vector<string>> jsonObject(const vector<string> & vec)
+{
+	map<string,vector<string>> ret;
+	string key = "";
+	vector<string> ele;
+	size_t flag = 0;
+	if (vec.size() > 2)
+	{
+		for (size_t i = 1; i < vec.size() - 1; ++i)
+		{
+			if (vec.at(i) == ",")
+			{
+				if (flag == 0)
+				{
+					ret.insert({ key, ele });
+				}
+				else
+				{
+					ele.push_back(",");
+				}
+			}
+			else if (vec.at(i) == "{" || vec.at(i) == "[")
+			{
+				++flag;
+				ele.push_back(vec.at(i));
+			}
+			else if (vec.at(i) == "}" || vec.at(i) == "]")
+			{
+				--flag;
+				ele.push_back(vec.at(i));
+			}
+			else if (vec.at(i) == ":")
+			{
+				key = vec.at(i - 1);
+				ele.clear();
+			}
+			else 
+			{
+				ele.push_back(vec.at(i));
+			}
+		}
+		ret.insert({ key, ele });
+	}
+	return ret;
+}
 int main()
 {
-	string str = R"(
-{
-    "employees": [
-{ "fir\"stName":"Bill" , "last Name":"Gates" },
-
-{ " firstName":false ,      "lastName":33.5 },
-
-{ "firstName":"trues" , "lastName":"Carter" }
-
-]
-})";
+	string str = R"({"12345":123,"2222":[1,2,[1,2,3],3,4]})";
 	
 	auto ret = DFA(str);
 	for (auto i : ret)
 	{
 		cout << i ;
+	}
+	cout << endl;
+	auto arrvec = jsonObject(ret);
+	cout << arrvec.size() << endl;
+	for (auto i : arrvec)
+	{
+		cout << "key:" << i.first << "val:" ;
+		for (auto k : i.second)
+		{
+			cout <<k;
+		}
 	}
 	getchar();
 	return 0;
