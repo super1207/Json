@@ -5,7 +5,7 @@
 #include <cstdlib>
 using namespace std;
 
-vector<string> JsonFromStr(string str)
+vector<string> JsonFromStr(const string & str)
 {
 	vector<string> ret;
 	for (size_t i = 0; i < str.length();)
@@ -229,7 +229,7 @@ string jsonToStr(const vector<string> & vec)
 class Json
 {
 public:
-	void JsonRead(string str)
+	void JsonRead(const string &str)
 	{
 		this->data = JsonFromStr(str);
 	}
@@ -237,7 +237,7 @@ public:
 	{
 		data.push_back("0");
 	}
-	Json(string str)
+	Json(const string & str)
 	{
 		data.push_back("\"");
 		data.push_back(str);
@@ -271,7 +271,7 @@ public:
 	{
 		data.push_back(B ? "true" : "false");
 	}
-	Json operator[](string key)const
+	Json operator[](const string& key)const
 	{		
 		return jsonObject(data).at(key);
 	}
@@ -379,3 +379,5 @@ object
 */
 	return 0;
 }
+
+
