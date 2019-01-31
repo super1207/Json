@@ -5,7 +5,7 @@ sujson是一个轻量级的C++JSON解析库，允许你通过简洁的步骤来�
 
 ##  文档
 
-https://github.com/super1207/Json
+https://github.com/super1207/Json/doc
 
 ## 一个最简单的例子
   ```cpp
