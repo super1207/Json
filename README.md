@@ -33,8 +33,14 @@ https://github.com/super1207/Json
     cout << i << endl;   // 输出 60
   }
   ```
+  ### 快速运行这个例程
+    git clone https://github.com/super1207/Json
+    cd Json
+    make
+    make run
  ## 你可以通过以下方法来使用这个简洁的json库
  ### 方法一：从源码引用
  * 将sujson.cpp添加到你的工程源码中
  * 将sujson.cpp添加到你的工程包含目录
  * 在需要使用的地方#include "sujson.h"
+ * 在需要的地方using namespace SU;
