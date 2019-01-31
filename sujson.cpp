@@ -102,6 +102,10 @@ namespace SU
 
 				ret.push_back(n);
 			}
+			else if (str.at(i) == '/')
+			{
+				while (str.at(i++) != '\n');
+			}
 			else
 			{
 				++i;
