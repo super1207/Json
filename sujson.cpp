@@ -239,27 +239,49 @@ namespace SU
 	}
 	SU::Json::Json(const string & str)
 	{
-		data.push_back("\"");
-		data.push_back(str);
-		data.push_back("\"");
+		data.push_back("\""+str+"\"");
 	}
 	SU::Json::Json(const vector<string> & vec)
 	{
 		this->data = vec;
 	}
-	SU::Json::Json(const map<string, vector<string>> & m)
+	SU::Json::Json(const vector<SU::Json> & vec)
+	{
+		data.push_back("[");
+		if (vec.size() > 0)
+		{
+			for (size_t i = 0; i < vec.size() - 1; ++i)
+			{
+				data.insert(data.end(), vec.at(i).data.begin(), vec.at(i).data.end());
+				data.push_back(",");
+			}
+			data.insert(data.end(), vec.at(vec.size() - 1).data.begin(), \
+				vec.at(vec.size() - 1).data.end());
+		}
+		data.push_back("]");
+	}
+	SU::Json::Json(const std::map<std::string, Json> & m)
 	{
 		data.push_back("{");
-		map<string, vector<string>>::const_iterator it;
-		for (it = m.begin(); it != m.end(); ++it)
+		if (m.size() > 0)
 		{
-			data.push_back("\"" + it->first + "\"");
-			data.push_back(":");
-			data.insert(data.begin(), it->second.begin(), it->second.end());
+			map<string, Json>::const_iterator it;
+			for (it = m.begin(); it != m.end(); ++it)
+			{
+				data.push_back("\"" + it->first + "\"");
+				data.push_back(":");
+				data.insert(data.end(), it->second.data.begin(), it->second.data.end());
+				data.push_back(",");
+			}
+			data.pop_back();
 		}
 		data.push_back("}");
 	}
 	SU::Json::Json(double number)
+	{
+		data.push_back(to_string(number));
+	}
+	Json::Json(int number)
 	{
 		data.push_back(to_string(number));
 	}
@@ -290,7 +312,7 @@ namespace SU
 	}
 	string SU::Json::asString()const
 	{
-		return data.at(0);//data.at(0).substr(1, data.at(0).length()-2);
+		return data.at(0).substr(1, data.at(0).length()-2);
 	}
 	double SU::Json::asDouble()const
 	{
@@ -304,13 +326,26 @@ namespace SU
 	{
 		return (data.at(0) == "null");
 	}
-	map<string, vector<string>> SU::Json::asMap()const
+	map<string, SU::Json> SU::Json::asMap()const
 	{
-		return jsonObject(data);
+		map<string, vector<string>> mmp = jsonObject(data);
+		map<string, SU::Json> ret;
+		for (auto & it: mmp)
+		{
+			ret.insert({ std::move(it.first), std::move(it.second) });
+		}
+		return ret;
 	}
-	vector<vector<string>> SU::Json::asVec()const
+	vector<SU::Json> SU::Json::asVec()const
 	{
-		return jsonArray(data);
+		
+		vector<vector<string>> arr = jsonArray(data);
+		vector<SU::Json> ret(arr.size());
+		for (size_t i = 0; i < arr.size(); ++i)
+		{
+			ret.at(i).data = std::move(arr.at(i));
+		}
+		return ret;
 	}
 	string SU::Json::toString()const
 	{
@@ -324,6 +359,26 @@ namespace SU
 	SU::Json & SU::Json::operator>>(int & out)
 	{
 		out = this->asInt();
+		return *this;
+	}
+	SU::Json & SU::Json::operator>>(std::string & out)
+	{
+		out = this->asString();
+		return *this;
+	}
+	SU::Json & SU::Json::operator>>(double & out)
+	{
+		out = this->asDouble();
+		return *this;
+	}
+	SU::Json & SU::Json::operator>>(bool & out)
+	{
+		out = this->asBool();
+		return *this;
+	}
+	SU::Json & SU::Json::operator>>(void * & out)
+	{
+		out = (this->isNull() ? nullptr : (void*)1);
 		return *this;
 	}
 	ostream & operator<<(ostream &os, const SU::Json  &ob)
