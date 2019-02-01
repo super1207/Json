@@ -187,7 +187,7 @@ using namespace SU;
 int main()
 {
 	bool b = true;
-	Json J(b);  //从std::string类型构建Json对象
+	Json J(b);  //从bool类型构建Json对象
 	cout << J;  //这里输出：true
 }
 ```
