@@ -10,7 +10,7 @@
     * [从double或int构建](#%E4%BB%8Edouble%E6%88%96int%E6%9E%84%E5%BB%BA)
     * [从std::string构建](#%E4%BB%8Estdstring%E6%9E%84%E5%BB%BA)
     * [从bool构建](#%E4%BB%8Ebool%E6%9E%84%E5%BB%BA)
-    * [从void \* 构建](#%E4%BB%8Evoid--%E6%9E%84%E5%BB%BA)
+    * [构建null类型](#%E6%9E%84%E5%BB%BAnull%E7%B1%BB%E5%9E%8B)
     * [从std::vector&lt;Json&gt; 构建](#%E4%BB%8Estdvectorjson-%E6%9E%84%E5%BB%BA)
     * [从std::map&lt;std::string,Json&gt;构建](#%E4%BB%8Estdmapstdstringjson%E6%9E%84%E5%BB%BA)
   * [如何将Json对象转化为具体的C\+\+中的类型](#%E5%A6%82%E4%BD%95%E5%B0%86json%E5%AF%B9%E8%B1%A1%E8%BD%AC%E5%8C%96%E4%B8%BA%E5%85%B7%E4%BD%93%E7%9A%84c%E4%B8%AD%E7%9A%84%E7%B1%BB%E5%9E%8B)
@@ -23,6 +23,7 @@
   * [sujson中的注释](#sujson%E4%B8%AD%E7%9A%84%E6%B3%A8%E9%87%8A)
   * [Json的子节点获取](#json%E7%9A%84%E5%AD%90%E8%8A%82%E7%82%B9%E8%8E%B7%E5%8F%96)
   * [更多细节](#%E6%9B%B4%E5%A4%9A%E7%BB%86%E8%8A%82)
+
 
 ## 怎样读取一个原始的json字符串
 
@@ -74,7 +75,7 @@ int main()
    	})";
    	J.JsonRead(str); //这与使用 <<  的方式无任何区别
    }
-   ```
+ ```
 
 ## 怎样获取一个Json对象的类型
 
@@ -169,10 +170,6 @@ int main()
 {
 	string s = "Alexcui";
 	Json J(s);  //从std::string类型构建Json对象
-    /*
-    	注意这里不能写为 Json J("Alexcui"); 因为"Alexcui"并不是std::string类型
-    	应该写为 Json J(string("Alexcui"));
-    */
 	cout << J;  //这里输出："Alexcui"
 }
 ```
@@ -192,7 +189,7 @@ int main()
 }
 ```
 
-### 从`void *` 构建
+###  构建`null`类型
 
 ```cpp
 #include"sujson.h"
@@ -201,9 +198,8 @@ using namespace std;
 using namespace SU;
 int main()
 {
-	void * p = nullptr;  // 如果这里p不为nullptr,则行为未定义！！！注意！！
-	Json J(p);  //从void *类型构建Json对象
-	cout << J;	//这里输出：null
+	Json J;  //构建null类型，无参构造默认null
+	cout << J;  //输出：null
 }
 ```
 
@@ -217,7 +213,7 @@ using namespace std;
 using namespace SU;
 int main()
 {
-	vector<Json> vec{ Json(30),Json(string("40.4")),Json(50.5) };
+	vector<Json> vec{ Json(30),Json("40.4"),Json(50.5) };
 	Json J(vec); 
 	cout << J << endl; //输出：[30,"40.4",50.500000]
 	return 0;
@@ -234,9 +230,9 @@ using namespace std;
 using namespace SU;
 int main()
 {
-	map<string, Json> mm{  {string("语文"),Json(30)},
-							{string("数学"),Json(string("40.4"))}, 
-							{string("外语"),Json(50.5)}
+	map<string, Json> mm{  {"语文",Json(30)},
+							{"数学",Json("40.4")}, 
+							{"外语",Json(50.5)}
 						 };
 	Json J(mm); 
 	cout << J << endl;  //输出：{"数学":"40.4","外语":50.500000,"语文":30}
@@ -275,7 +271,7 @@ using namespace SU;
 int main()
 {
 	string s;
-	Json J(string("AlexCui"));  
+	Json J("AlexCui");  
 	s = J.asString();  //Json对象转化为std::string类型
 	cout << s;  		    // 这里输出：AlexCui
 	cout << J;   		    //这里输出："AlexCui"
@@ -312,7 +308,7 @@ using namespace SU;
 int main()
 {
 	bool b;
-	Json J(nullptr);  //从void*类型构建Json对象
+	Json J;  //构建null类型，无参构造默认null
 	b = J.isNull();  //因为C++中并没有null类型，所以这个函数的作用是
     				//判断是否为空，返回的是bool型
 	cout << b; 			//输出：1

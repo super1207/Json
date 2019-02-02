@@ -18,8 +18,8 @@ namespace SU {
 		Json(const std::map<std::string, Json> & m);
 		Json(double number);
 		Json(int number);
-		Json(void * null);
 		Json(bool B);
+		Json(const char * str);
 		Json at(const std::string& key)const;
 		Json at(size_t num)const;
 		std::string type()const;
@@ -38,9 +38,13 @@ namespace SU {
 		Json & operator>>(void *& out);
 		std::string toString()const;
 		friend std::ostream& operator <<(std::ostream&, const Json&);
+		std::string formatString();
 		std::vector<std::string> data;
 	};
 	std::ostream & operator<<(std::ostream &os, const Json  &ob);
 }
 
 #endif // !__SUJSON_H__
+
+
+

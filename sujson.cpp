@@ -235,7 +235,7 @@ namespace SU
 	}
 	SU::Json::Json()
 	{
-		data.push_back("0");
+		data.push_back("null");
 	}
 	SU::Json::Json(const string & str)
 	{
@@ -285,14 +285,13 @@ namespace SU
 	{
 		data.push_back(to_string(number));
 	}
-	SU::Json::Json(void * null)
-	{
-		(void)null;
-		data.push_back("null");
-	}
 	SU::Json::Json(bool B)
 	{
 		data.push_back(B ? "true" : "false");
+	}
+	SU::Json::Json(const char * str)
+	{
+		data.push_back("\"" + std::string(str) + "\"");
 	}
 	Json SU::Json::at(const string& key)const
 	{
@@ -351,6 +350,37 @@ namespace SU
 	{
 		return jsonToStr(data);
 	}
+	std::string Json::formatString()
+	{
+		string t = "";
+		string ret = "";
+		for (const string & i : this->data)
+		{
+			
+			if (i == "{" || i == "[")
+			{
+				if(ret.size()!=0)ret.append("\n");
+				
+				ret.append(t+i);
+				t.push_back('\t');
+				ret.append('\n'+t);
+			}
+			else if (i == "}" || i == "]")
+			{
+				t.pop_back();
+				ret.append('\n'+t + i);
+			}
+			else if (i == ",")
+			{
+				ret.append(i+'\n'+t);
+			}
+			else
+			{
+				ret.append(i);
+			}
+		}
+		return ret;
+	}
 	SU::Json & SU::Json::operator<<(const std::string & str)
 	{
 		this->JsonRead(str);
@@ -387,3 +417,7 @@ namespace SU
 		return os;
 	}
 }
+
+
+
+
