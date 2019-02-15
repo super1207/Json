@@ -40,7 +40,7 @@ https://github.com/super1207/Json/tree/master/doc
  * 将sujson.cpp添加到你的工程源码中
  * 将sujson.h添加到你的工程包含目录
 
-### 方法二：构建静态连接库以使用sujson
+### 方法二：构建静态链接库以使用sujson
 
 * 首先，你需要确保你的环境中有CMake、Git、和一个支持C++11标准的编译器
 
