@@ -52,6 +52,6 @@ https://github.com/super1207/Json/tree/master/doc
 
 * 之后，你可以使用CMake来构建VS工程或者mingw-Makefile
 
-* 编译出静态链接库，得到sujson.lib(libjson.a)
+* 编译出静态链接库，得到sujson.lib(libsujson.a)
 * 在你的项目中链接上一步生成的静态链接库
 * 在你的项目中包含include文件夹
