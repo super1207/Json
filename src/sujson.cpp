@@ -58,12 +58,12 @@ namespace SU
 				string n = "";
 				do
 				{
+					n.push_back(str.at(i++));
 					if (i > str.length() - 1)
 					{
 						ret.push_back(n);
 						return ret;
 					}
-					n.push_back(str.at(i++));
 				} while ((str.at(i) <= '9'&& str.at(i) >= '0') || str.at(i) == '-' || str.at(i) == '.');
 				ret.push_back(n);
 			}
@@ -120,7 +120,8 @@ namespace SU
 						++i;
 						break;
 					}
-					else {
+					else 
+					{
 						++i;
 					}
 				}
