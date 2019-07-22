@@ -58,6 +58,11 @@ namespace SU
 				string n = "";
 				do
 				{
+					if (i > str.length() - 1)
+					{
+						ret.push_back(n);
+						return ret;
+					}
 					n.push_back(str.at(i++));
 				} while ((str.at(i) <= '9'&& str.at(i) >= '0') || str.at(i) == '-' || str.at(i) == '.');
 				ret.push_back(n);
@@ -104,7 +109,21 @@ namespace SU
 			}
 			else if (str.at(i) == '/')
 			{
-				while (str.at(i++) != '\n');
+				while (true) 
+				{
+					if (i == str.length() - 1)
+					{
+						return ret;
+					}
+					else if(str.at(i) == '\n')
+					{
+						++i;
+						break;
+					}
+					else {
+						++i;
+					}
+				}
 			}
 			else
 			{
