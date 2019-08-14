@@ -1,4 +1,4 @@
-# sujson
+# sujson(此项目问题太多，作者已经放弃治疗)
 [![badge](https://img.shields.io/badge/sujson%2F1.0.0-green.svg)](http://github.com/super1207/Json)
 
 sujson是一个轻量级的C++JSON解析库，允许你通过简洁的步骤来解析Json，完全使用C++11标准库编写，无任何其它的依赖
