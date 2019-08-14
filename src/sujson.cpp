@@ -98,9 +98,44 @@ namespace SU
 						++i;
 						break;
 					}
-					else
+					else if(str.at(i) == 't')
 					{
-						n.push_back(str.at(i));
+						n.push_back('\t');
+						++i;
+					}
+					else if (str.at(i) == 'r')
+					{
+						n.push_back('\r');
+						++i;
+					}
+					else if (str.at(i) == 'n')
+					{
+						n.push_back('\n');
+						++i;
+					}
+					else if (str.at(i) == 'f')
+					{
+						n.push_back('\f');
+						++i;
+					}
+					else if (str.at(i) == 'b')
+					{
+						n.push_back('\b');
+						++i;
+					}
+					else if (str.at(i) == '/')
+					{
+						n.push_back('/');
+						++i;
+					}
+					else if (str.at(i) == '\\')
+					{
+						n.push_back('\\');
+						++i;
+					}
+					else if (str.at(i) == '"')
+					{
+						n.push_back('"');
 						++i;
 					}
 				}
